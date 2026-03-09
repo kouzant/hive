@@ -883,6 +883,7 @@ public class MetastoreConf {
         "hive.metastore.wm.default.pool.size", 4,
         "The size of a default pool to create when creating an empty resource plan;\n" +
         "If not positive, no default pool will be created."),
+    METASTORE_HOPS_HIVE_TLS("metastore.hops.tls.enabled", "hive.metastore.hops.tls.enabled", true, "FML"),
 
     // Hive values we have copied and use as is
     // These two are used to indicate that we are running tests

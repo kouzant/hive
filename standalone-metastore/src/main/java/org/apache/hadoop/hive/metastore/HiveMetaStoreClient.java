@@ -437,13 +437,20 @@ public class HiveMetaStoreClient implements IMetaStoreClient, AutoCloseable {
 
   }
 
+
+  private boolean isHopsTlsEnabled() {
+    LOG.info("antonios: METASTORE TLS: " + MetastoreConf.getBoolVar(conf, ConfVars.METASTORE_HOPS_HIVE_TLS));
+    return MetastoreConf.getBoolVar(conf, ConfVars.METASTORE_HOPS_HIVE_TLS) &&
+      conf.getBoolean(
+        CommonConfigurationKeysPublic.IPC_SERVER_SSL_ENABLED,
+        CommonConfigurationKeysPublic.IPC_SERVER_SSL_ENABLED_DEFAULT);
+  }
+
   private void open() throws MetaException {
     isConnected = false;
     TTransportException tte = null;
 
-    boolean hopsTLS = conf.getBoolean(
-        CommonConfigurationKeysPublic.IPC_SERVER_SSL_ENABLED,
-        CommonConfigurationKeysPublic.IPC_SERVER_SSL_ENABLED_DEFAULT);
+    boolean hopsTLS = isHopsTlsEnabled();
     boolean useSasl = MetastoreConf.getBoolVar(conf, ConfVars.USE_THRIFT_SASL);
     boolean useFramedTransport = MetastoreConf.getBoolVar(conf, ConfVars.USE_THRIFT_FRAMED_TRANSPORT);
     boolean useCompactProtocol = MetastoreConf.getBoolVar(conf, ConfVars.USE_THRIFT_COMPACT_PROTOCOL);
